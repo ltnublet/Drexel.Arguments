@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Drexel.Collections.Generic;
 
 namespace Drexel.Arguments
@@ -6,11 +7,16 @@ namespace Drexel.Arguments
     /// <summary>
     /// Represents an argument (something also called an option).
     /// </summary>
+    [DebuggerDisplay("{HumanReadableName,nq}")]
     public abstract class Argument
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Argument"/> class.
         /// </summary>
+        /// <param name="humanReadableName">
+        /// The human-readable name of this argument. This name will appear in error messages or help pages, but will
+        /// not be used during parsing.
+        /// </param>
         /// <param name="shortNames">
         /// The short names of the argument.
         /// </param>
@@ -26,21 +32,19 @@ namespace Drexel.Arguments
         /// <param name="operandCount">
         /// Operand count limitations associated with this argument.
         /// </param>
-        /// <param name="dependsOn">
-        /// Arguments that this argument depends on.
-        /// </param>
-        /// <param name="exclusiveWith">
-        /// Arguments that this argument is exclusive with.
-        /// </param>
         public Argument(
-            IReadOnlySet<string> shortNames,
-            IReadOnlySet<string> longNames,
+            string humanReadableName,
+            IReadOnlyInvariantSet<string> shortNames,
+            IReadOnlyInvariantSet<string> longNames,
             string description,
             bool required,
-            OperandCount operandCount,
-            IReadOnlyInvariantSet<Argument> dependsOn,
-            IReadOnlyInvariantSet<Argument> exclusiveWith)
+            OperandCount operandCount)
         {
+            if (null == humanReadableName)
+            {
+                throw new ArgumentNullException(nameof(humanReadableName));
+            }
+
             if (null == shortNames)
             {
                 throw new ArgumentNullException(nameof(shortNames));
@@ -61,16 +65,6 @@ namespace Drexel.Arguments
                 throw new ArgumentNullException(nameof(operandCount));
             }
 
-            if (null == dependsOn)
-            {
-                throw new ArgumentNullException(nameof(dependsOn));
-            }
-
-            if (null == exclusiveWith)
-            {
-                throw new ArgumentNullException(nameof(exclusiveWith));
-            }
-
             foreach (string name in shortNames)
             {
                 if (name.Length < 1)
@@ -87,29 +81,29 @@ namespace Drexel.Arguments
                 }
             }
 
-            if (dependsOn.Overlaps(exclusiveWith))
-            {
-                throw new ArgumentException("Argument cannot depend on an argument it is exclusive with.");
-            }
-
+            this.HumanReadableName = humanReadableName;
             this.ShortNames = shortNames;
             this.LongNames = longNames;
             this.Description = description;
             this.Required = required;
             this.OperandCount = operandCount;
-            this.DependsOn = dependsOn;
-            this.ExclusiveWith = exclusiveWith;
         }
+
+        /// <summary>
+        /// Gets the human readable name of this argument. This name will be used in error messages or help pages, but
+        /// will not be used during parsing.
+        /// </summary>
+        public string HumanReadableName { get; }
 
         /// <summary>
         /// Gets the short name(s) of this argument.
         /// </summary>
-        public IReadOnlySet<string> ShortNames { get; }
+        public IReadOnlyInvariantSet<string> ShortNames { get; }
 
         /// <summary>
         /// Gets the long name(s) of this argument.
         /// </summary>
-        public IReadOnlySet<string> LongNames { get; }
+        public IReadOnlyInvariantSet<string> LongNames { get; }
 
         /// <summary>
         /// Gets the description of this argument.
@@ -126,15 +120,5 @@ namespace Drexel.Arguments
         /// this argument can be satisfied by.
         /// </summary>
         public OperandCount OperandCount { get; }
-
-        /// <summary>
-        /// Gets the <see cref="Argument"/>s this argument depends on.
-        /// </summary>
-        public IReadOnlyInvariantSet<Argument> DependsOn { get; }
-
-        /// <summary>
-        /// Gets the <see cref="Argument"/>s this argument is exclusive with.
-        /// </summary>
-        public IReadOnlyInvariantSet<Argument> ExclusiveWith { get; }
     }
 }

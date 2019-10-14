@@ -14,7 +14,7 @@ namespace Drexel.Arguments
         /// <param name="order">
         /// The order in which the arguments were received.
         /// </param>
-        /// <param name="arguments">
+        /// <param name="parentedValues">
         /// A mapping between arguments and their parsed results.
         /// </param>
         /// <param name="unparentedValues">
@@ -22,18 +22,13 @@ namespace Drexel.Arguments
         /// </param>
         public ParseResult(
             IReadOnlyList<Argument> order,
-            IReadOnlyDictionary<Argument, IReadOnlyList<string>> arguments,
-            IReadOnlyList<KeyValuePair<Argument, IReadOnlyList<string>>> unparentedValues)
+            IReadOnlyDictionary<Argument, IReadOnlyList<string>> parentedValues,
+            IReadOnlyList<KeyValuePair<Argument?, IReadOnlyList<string>>> unparentedValues)
         {
             this.Order = order ?? throw new ArgumentNullException(nameof(order));
-            this.Arguments = arguments ?? throw new ArgumentNullException(nameof(arguments));
+            this.ParentedValues = parentedValues ?? throw new ArgumentNullException(nameof(parentedValues));
             this.UnparentedValues = unparentedValues ?? throw new ArgumentNullException(nameof(unparentedValues));
         }
-
-        /// <summary>
-        /// Gets the mapping between arguments and their parsed results.
-        /// </summary>
-        public IReadOnlyDictionary<Argument, IReadOnlyList<string>> Arguments { get; }
 
         /// <summary>
         /// Gets the order in which the arguments were received.
@@ -41,8 +36,14 @@ namespace Drexel.Arguments
         public IReadOnlyList<Argument> Order { get; }
 
         /// <summary>
-        /// Gets any unparented values that were found during parsing.
+        /// Gets the mapping between arguments and their parsed results.
         /// </summary>
-        public IReadOnlyList<KeyValuePair<Argument, IReadOnlyList<string>>> UnparentedValues { get; }
+        public IReadOnlyDictionary<Argument, IReadOnlyList<string>> ParentedValues { get; }
+
+        /// <summary>
+        /// Gets any unparented values that were found during parsing. Note that a key of null means that the
+        /// unparented value(s) occurred before any argument was specified.
+        /// </summary>
+        public IReadOnlyList<KeyValuePair<Argument?, IReadOnlyList<string>>> UnparentedValues { get; }
     }
 }

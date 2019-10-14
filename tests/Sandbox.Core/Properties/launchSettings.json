@@ -1,8 +1,7 @@
 {
   "profiles": {
     "Sandbox.Core": {
-      "commandName": "Project",
-      "commandLineArgs": "Foo bar \"Baz bazinga bongo\" doodledoo"
+      "commandName": "Project"
     }
   }
 }

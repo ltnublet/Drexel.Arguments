@@ -19,10 +19,18 @@ namespace Drexel.Arguments
         /// non-<see langword="null"/>.
         /// </param>
         /// <exception cref="ArgumentException">
-        /// Thrown when <paramref name="upperBound"/> is less than <paramref name="lowerBound"/>.
+        /// Thrown when <paramref name="lowerBound"/> is less than 0, or <paramref name="upperBound"/> is less than
+        /// <paramref name="lowerBound"/>.
         /// </exception>
-        public OperandCount(ulong lowerBound = 1, ulong? upperBound = null)
+        public OperandCount(long lowerBound = 1, long? upperBound = null)
         {
+            if (lowerBound < 0)
+            {
+                throw new ArgumentException(
+                    "Lower bound cannot be less than zero.",
+                    nameof(lowerBound));
+            }
+
             if (upperBound.HasValue && upperBound.Value < lowerBound)
             {
                 throw new ArgumentException(
@@ -51,12 +59,12 @@ namespace Drexel.Arguments
         /// <summary>
         /// Gets the lower bound on the allowed number of operands.
         /// </summary>
-        public ulong LowerBound { get; }
+        public long LowerBound { get; }
 
         /// <summary>
         /// Gets the upper bound on the allowed number of operands, if one exists.
         /// </summary>
-        public ulong? UpperBound { get; }
+        public long? UpperBound { get; }
 
         /// <summary>
         /// Compares two <see cref="OperandCount"/>s.
