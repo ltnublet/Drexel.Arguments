@@ -26,7 +26,7 @@ namespace Drexel.Arguments.Parsers.Internals
             T sharedState = this.sharedStateFactory.Invoke();
 
             bool running = true;
-            do
+            top: while (running)
             {
                 foreach (Condition<T> condition in currentState.Transitions)
                 {
@@ -34,28 +34,23 @@ namespace Drexel.Arguments.Parsers.Internals
                     if (result == ConditionResult.Break)
                     {
                         currentState = this.states[condition.TransitionTo];
-                        goto bottom;
+                        goto top;
                     }
                     else if (result == ConditionResult.Continue)
                     {
-                        goto bottom;
+                        continue;
                     }
                     else if (result == ConditionResult.Stop)
                     {
                         running = false;
-                        goto bottom;
+                        goto top;
                     }
                     else
                     {
                         throw new InvalidOperationException("Unrecognized condition result.");
                     }
                 }
-
-                bottom:
-                {
-                }
             }
-            while (running);
 
             return sharedState;
         }

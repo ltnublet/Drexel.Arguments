@@ -1,31 +1,35 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Drexel.Arguments.Parsers.Internals
 {
+    [DebuggerDisplay("{debugName,nq}")]
     internal class ConditionResult : IEquatable<ConditionResult>, IEquatable<bool>
     {
         private readonly int value;
+        private readonly string debugName;
 
-        private ConditionResult(int value)
+        private ConditionResult(int value, string debugName)
         {
             this.value = value;
+            this.debugName = debugName;
         }
 
         /// <summary>
         /// Indicates that the state should check the next transition.
         /// </summary>
-        public static ConditionResult Continue { get; } = new ConditionResult(0);
+        public static ConditionResult Continue { get; } = new ConditionResult(0, nameof(Continue));
 
         /// <summary>
         /// Indicates that the state machine should stop evaluating conditions, and transition into the state
         /// specified by this transition.
         /// </summary>
-        public static ConditionResult Break { get; } = new ConditionResult(1);
+        public static ConditionResult Break { get; } = new ConditionResult(1, nameof(Break));
 
         /// <summary>
         /// Indicates that the state machine should stop evaluating transitions.
         /// </summary>
-        public static ConditionResult Stop { get; } = new ConditionResult(2);
+        public static ConditionResult Stop { get; } = new ConditionResult(2, nameof(Stop));
 
         public static implicit operator bool(ConditionResult instance)
         {
@@ -35,7 +39,7 @@ namespace Drexel.Arguments.Parsers.Internals
             }
             else
             {
-                return instance.value == 0;
+                return instance != ConditionResult.Continue;
             }
         }
 
@@ -43,11 +47,11 @@ namespace Drexel.Arguments.Parsers.Internals
         {
             if (instance)
             {
-                return ConditionResult.Continue;
+                return ConditionResult.Break;
             }
             else
             {
-                return ConditionResult.Break;
+                return ConditionResult.Continue;
             }
         }
 
@@ -132,13 +136,7 @@ namespace Drexel.Arguments.Parsers.Internals
 
         public bool Equals(bool other)
         {
-            return this.value switch
-            {
-                0 => other,
-                1 => !other,
-                2 => !other,
-                _ => throw new InvalidOperationException("Unrecognized condition result internal value.")
-            };
+            return (bool)this == other;
         }
 
         public override int GetHashCode()

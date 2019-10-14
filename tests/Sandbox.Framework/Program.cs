@@ -57,6 +57,12 @@ namespace Sandbox.Framework
                         new List<string>(),
                         "H",
                         operandCount: OperandCount.Flag),
+                    new RuntimeArgument(
+                        "I",
+                        new List<string>() { "I" },
+                        new List<string>(),
+                        "I",
+                        operandCount: new OperandCount(2, 2)),
                 });
 
             args = new string[]
@@ -72,7 +78,10 @@ namespace Sandbox.Framework
                 "unparented3",
                 "/C",
                 "gamma",
-                "/H"
+                "/H",
+                "/I",
+                "iota1",
+                "iota2"
             };
 
             ParseResult result = parser.Parse(args);
