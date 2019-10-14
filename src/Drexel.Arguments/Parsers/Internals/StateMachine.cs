@@ -8,22 +8,19 @@ namespace Drexel.Arguments.Parsers.Internals
     {
         private readonly IReadOnlyDictionary<string, Transition<T>> states;
         private readonly Transition<T> startInState;
-        private readonly Func<T> sharedStateFactory;
 
         public StateMachine(
             Transition<T> startInState,
-            IReadOnlyList<Transition<T>> states,
-            Func<T> sharedStateFactory)
+            IReadOnlyList<Transition<T>> states)
         {
             this.startInState = startInState;
             this.states = states.ToDictionary(x => x.Name, x => x);
-            this.sharedStateFactory = sharedStateFactory;
         }
 
-        public T Run()
+        public T Run(Func<T> sharedStateFactory)
         {
             Transition<T> currentState = this.startInState;
-            T sharedState = this.sharedStateFactory.Invoke();
+            T sharedState = sharedStateFactory.Invoke();
 
             bool running = true;
             top: while (running)

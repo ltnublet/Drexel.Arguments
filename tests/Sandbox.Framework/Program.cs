@@ -27,7 +27,7 @@ namespace Sandbox.Framework
                         new List<string>(),
                         "B",
                         false,
-                        new OperandCount(2, 2)),
+                        new OperandCount(2, 3)),
                     new RuntimeArgument(
                         "C",
                         new List<string>() { "C" },
@@ -62,7 +62,7 @@ namespace Sandbox.Framework
                         new List<string>() { "I" },
                         new List<string>(),
                         "I",
-                        operandCount: new OperandCount(2, 2)),
+                        operandCount: new OperandCount(2, null)),
                 });
 
             args = new string[]
@@ -74,6 +74,7 @@ namespace Sandbox.Framework
                 "/B",
                 "beta1",
                 "beta2",
+                "beta3",
                 "/EFG",
                 "unparented3",
                 "/C",
@@ -81,7 +82,8 @@ namespace Sandbox.Framework
                 "/H",
                 "/I",
                 "iota1",
-                "iota2"
+                "iota2",
+                "iota3",
             };
 
             ParseResult result = parser.Parse(args);

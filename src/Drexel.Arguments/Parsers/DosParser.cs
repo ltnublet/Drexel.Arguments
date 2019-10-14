@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using Drexel.Arguments.Parsers.Internals;
 using Drexel.Collections.Generic;
 
@@ -9,44 +8,9 @@ namespace Drexel.Arguments.Parsers
 {
     internal sealed class DosParser : IParser
     {
-        private DosParser()
-        {
-        }
+        private static readonly StateMachine<SharedState> StateMachine;
 
-        public static DosParser Singleton { get; } = new DosParser();
-
-        public void ThrowIfIllegal(IReadOnlySet<Argument> arguments)
-        {
-            HashSet<char> characters = new HashSet<char>();
-            foreach (Argument argument in arguments)
-            {
-                foreach (string shortName in argument.ShortNames)
-                {
-                    if (shortName.Length > 1)
-                    {
-                        throw new ArgumentException(
-                            "DOS-style parsing requires that short names be only one character long.");
-                    }
-
-                    char character = shortName[0];
-                    if (character == '/')
-                    {
-                        throw new ArgumentException(
-                            "DOS-style parsing requires names not start with '/'.");
-                    }
-
-                    if (!characters.Add(character))
-                    {
-                        throw new ArgumentException(
-                            "DOS-style parsing requires that short names have a unique first character.");
-                    }
-                }
-            }
-        }
-
-        public ParseResult Parse(
-            IReadOnlySet<Argument> arguments,
-            IReadOnlyList<string> values)
+        static DosParser()
         {
             Transition<SharedState> notEnoughOperands = new Transition<SharedState>(
                 "Not enough operands",
@@ -79,7 +43,7 @@ namespace Drexel.Arguments.Parsers
                     {
                         return ConditionResult.Stop;
                     }));
-            Transition <SharedState> startsWithSlash = new Transition<SharedState>(
+            Transition<SharedState> startsWithSlash = new Transition<SharedState>(
                 "Starts with slash",
                 new Condition<SharedState>(
                     "Value",
@@ -207,7 +171,7 @@ namespace Drexel.Arguments.Parsers
                         return true;
                     }));
 
-            StateMachine<SharedState> stateMachine = new StateMachine<SharedState>(
+            DosParser.StateMachine = new StateMachine<SharedState>(
                 main,
                 new List<Transition<SharedState>>()
                 {
@@ -218,23 +182,51 @@ namespace Drexel.Arguments.Parsers
                     unparentedValue,
                     notEnoughOperands,
                     noMoreValues
-                },
-                () => new SharedState(arguments, values));
-
-            SharedState finalState = stateMachine.Run();
-
-            ////if (finalState.CurrentArgument != null)
-            ////{
-            ////    if ((finalState.Position - finalState.PositionAtTimeOfLastArgumentSet)
-            ////        < finalState.CurrentArgument.OperandCount.LowerBound)
-            ////    {
-            ////        throw new InvalidOperationException(
-            ////            $"Argument '{finalState.CurrentArgument.HumanReadableName}' expected at least {finalState.CurrentArgument.OperandCount.LowerBound} values.");
-            ////    }
-            ////}
-
-            return finalState.Results.ToParseResult();
+                });
         }
+
+        private DosParser()
+        {
+        }
+
+        public static DosParser Singleton { get; } = new DosParser();
+
+        public void ThrowIfIllegal(IReadOnlySet<Argument> arguments)
+        {
+            HashSet<char> characters = new HashSet<char>();
+            foreach (Argument argument in arguments)
+            {
+                foreach (string shortName in argument.ShortNames)
+                {
+                    if (shortName.Length > 1)
+                    {
+                        throw new ArgumentException(
+                            "DOS-style parsing requires that short names be only one character long.");
+                    }
+
+                    char character = shortName[0];
+                    if (character == '/')
+                    {
+                        throw new ArgumentException(
+                            "DOS-style parsing requires names not start with '/'.");
+                    }
+
+                    if (!characters.Add(character))
+                    {
+                        throw new ArgumentException(
+                            "DOS-style parsing requires that short names have a unique first character.");
+                    }
+                }
+            }
+        }
+
+        public ParseResult Parse(
+            IReadOnlySet<Argument> arguments,
+            IReadOnlyList<string> values) => DosParser
+                .StateMachine
+                .Run(() => new SharedState(arguments, values))
+                .Results
+                .ToParseResult();
 
         private class SharedState
         {
