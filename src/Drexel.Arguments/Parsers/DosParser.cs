@@ -191,6 +191,14 @@ namespace Drexel.Arguments.Parsers
 
         public static DosParser Singleton { get; } = new DosParser();
 
+        public ParseResult Parse(
+            IReadOnlySet<Argument> arguments,
+            IReadOnlyList<string> values) => DosParser
+                .StateMachine
+                .Run(() => new SharedState(arguments, values))
+                .Results
+                .ToParseResult();
+
         public void ThrowIfIllegal(IReadOnlySet<Argument> arguments)
         {
             HashSet<char> characters = new HashSet<char>();
@@ -218,54 +226,6 @@ namespace Drexel.Arguments.Parsers
                     }
                 }
             }
-        }
-
-        public ParseResult Parse(
-            IReadOnlySet<Argument> arguments,
-            IReadOnlyList<string> values) => DosParser
-                .StateMachine
-                .Run(() => new SharedState(arguments, values))
-                .Results
-                .ToParseResult();
-
-        private class SharedState
-        {
-            private Argument? currentArgument;
-
-            public SharedState(
-                IReadOnlySet<Argument> arguments,
-                IReadOnlyList<string> values)
-            {
-                this.Arguments = arguments;
-                this.Values = values;
-
-                this.currentArgument = null;
-                this.Results = new MutableParseResult();
-                this.Position = 0;
-                this.PositionAtTimeOfLastArgumentSet = 0;
-            }
-
-            public IReadOnlySet<Argument> Arguments { get; }
-
-            public IReadOnlyList<string> Values { get; }
-
-            public MutableParseResult Results { get; }
-
-            public int Position { get; set; }
-
-            public int PositionAtTimeOfLastArgumentSet { get; private set; }
-
-            public Argument? CurrentArgument
-            {
-                get => this.currentArgument;
-                set
-                {
-                    this.currentArgument = value;
-                    this.PositionAtTimeOfLastArgumentSet = this.Position;
-                }
-            }
-
-            public string CurrentValue => this.Values[this.Position];
         }
     }
 }

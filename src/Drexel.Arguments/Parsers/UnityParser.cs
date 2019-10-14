@@ -4,18 +4,13 @@ using Drexel.Collections.Generic;
 
 namespace Drexel.Arguments.Parsers
 {
-    internal sealed class MsBuildParser : IParser
+    internal sealed class UnityParser : IParser
     {
-        static MsBuildParser()
-        {
-
-        }
-
-        private MsBuildParser()
+        private UnityParser()
         {
         }
 
-        public static MsBuildParser Singleton { get; } = new MsBuildParser();
+        public static UnityParser Singleton { get; } = new UnityParser();
 
         public ParseResult Parse(IReadOnlySet<Argument> arguments, IReadOnlyList<string> values)
         {

@@ -20,6 +20,7 @@ namespace Drexel.Arguments
                 ParseStyle.GNU => GnuParser.Singleton,
                 ParseStyle.MSBuild => MsBuildParser.Singleton,
                 ParseStyle.Posix => PosixParser.Singleton,
+                ParseStyle.Unity => UnityParser.Singleton,
                 ParseStyle.Windows => WindowsParser.Singleton,
                 _ => throw new NotImplementedException("Unrecognized parse style.")
             };
