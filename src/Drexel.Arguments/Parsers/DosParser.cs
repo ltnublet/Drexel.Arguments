@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Drexel.Arguments.Parsers.Internals;
 using Drexel.Collections.Generic;
 
 namespace Drexel.Arguments.Parsers
@@ -47,32 +48,45 @@ namespace Drexel.Arguments.Parsers
             IReadOnlySet<Argument> arguments,
             IReadOnlyList<string> values)
         {
-            State nullOrEmpty = new State(
-                "Null or empty",
-                new Transition(
+            Transition<SharedState> notEnoughOperands = new Transition<SharedState>(
+                "Not enough operands",
+                new Condition<SharedState>(
                     "Main",
-                    (x, y) =>
+                    x =>
+                    {
+                        throw new InvalidOperationException(
+                            $"Argument '{x.CurrentArgument.HumanReadableName}' expected at least {x.CurrentArgument.OperandCount.LowerBound} values.");
+                    }));
+            Transition<SharedState> nullOrEmpty = new Transition<SharedState>(
+                "Null or empty",
+                new Condition<SharedState>(
+                    "Main",
+                    x =>
                     {
                         throw new InvalidOperationException(
                             "Null or empty token encountered while parsing.");
                     }));
-            State notEnoughOperands = new State(
-                "Not enough operands",
-                new Transition(
+            Transition<SharedState> noMoreValues = new Transition<SharedState>(
+                "No more values",
+                new Condition<SharedState>(
+                    "Not enough operands",
+                    x => x.CurrentArgument != null
+                        && (x.Position - x.PositionAtTimeOfLastArgumentSet)
+                            <= x.CurrentArgument.OperandCount.LowerBound),
+                new Condition<SharedState>(
                     "Main",
-                    (x, y) =>
+                    x =>
                     {
-                        throw new InvalidOperationException(
-                            $"Argument '{y.CurrentArgument.HumanReadableName}' expected at least {y.CurrentArgument.OperandCount.LowerBound} values.");
+                        return ConditionResult.Stop;
                     }));
-            State startsWithSlash = new State(
+            Transition <SharedState> startsWithSlash = new Transition<SharedState>(
                 "Starts with slash",
-                new Transition(
+                new Condition<SharedState>(
                     "Value",
-                    (x, y) =>
+                    x =>
                     {
                         // If they just sent us "/", then that's actually a value.
-                        string substring = x.Substring(1);
+                        string substring = x.CurrentValue.Substring(1);
                         if (substring.Length == 0)
                         {
                             return true;
@@ -80,29 +94,29 @@ namespace Drexel.Arguments.Parsers
 
                         return false;
                     }),
-                new Transition(
+                new Condition<SharedState>(
                     "Not enough operands",
-                    (x, y) => y.CurrentArgument != null
-                        && (y.Position - y.PositionAtTimeOfLastArgumentSet)
-                            <= y.CurrentArgument.OperandCount.LowerBound),
-                new Transition(
+                    x => x.CurrentArgument != null
+                        && (x.Position - x.PositionAtTimeOfLastArgumentSet)
+                            <= x.CurrentArgument.OperandCount.LowerBound),
+                new Condition<SharedState>(
                     "Main",
-                    (x, y) =>
+                    x =>
                     {
-                        string substring = x.Substring(1);
+                        string substring = x.CurrentValue.Substring(1);
                         foreach (char character in substring)
                         {
                             bool recognized = false;
-                            foreach (Argument argument in y.Arguments)
+                            foreach (Argument argument in x.Arguments)
                             {
                                 if (argument.ShortNames.Contains(character.ToString(CultureInfo.InvariantCulture)))
                                 {
-                                    if (y.CurrentArgument != argument)
+                                    if (x.CurrentArgument != argument)
                                     {
-                                        y.Results.Order.Add(argument);
+                                        x.Results.Order.Add(argument);
                                     }
 
-                                    y.CurrentArgument = argument;
+                                    x.CurrentArgument = argument;
 
                                     recognized = true;
                                     break;
@@ -116,33 +130,33 @@ namespace Drexel.Arguments.Parsers
                             }
                         }
 
-                        y.Position++;
+                        x.Position++;
                         return true;
                     }));
-            State unparentedValue = new State(
+            Transition<SharedState> unparentedValue = new Transition<SharedState>(
                 "Unparented value",
-                new Transition(
+                new Condition<SharedState>(
                     "Main",
-                    (x, y) =>
+                    x =>
                     {
-                        y.Results.UnparentedValues.Add(y.CurrentArgument, x);
-                        y.Position++;
+                        x.Results.UnparentedValues.Add(x.CurrentArgument, x.CurrentValue);
+                        x.Position++;
                         return true;
                     }));
-            State value = new State(
+            Transition<SharedState> value = new Transition<SharedState>(
                 "Value",
-                new Transition(
+                new Condition<SharedState>(
                     "Unparented value",
-                    (x, y) =>
+                    x =>
                     {
                         // If we don't have an argument, or our last argument ran out of values, then this is actually
                         // an unparented value.
-                        if (y.CurrentArgument == null)
+                        if (x.CurrentArgument == null)
                         {
                             return true;
                         }
-                        else if ((y.Position - y.PositionAtTimeOfLastArgumentSet)
-                            > y.CurrentArgument.OperandCount.UpperBound)
+                        else if ((x.Position - x.PositionAtTimeOfLastArgumentSet)
+                            > x.CurrentArgument.OperandCount.UpperBound)
                         {
                             return true;
                         }
@@ -151,113 +165,103 @@ namespace Drexel.Arguments.Parsers
                             return false;
                         }
                     }),
-                new Transition(
+                new Condition<SharedState>(
                     "Main",
-                    (x, y) =>
+                    x =>
                     {
-                        y.Results.ParentedValues.Add(y.CurrentArgument, x);
-                        y.Position++;
+                        x.Results.ParentedValues.Add(x.CurrentArgument, x.CurrentValue);
+                        x.Position++;
                         return true;
                     }));
 
-            State main = new State(
+            Transition<SharedState> main = new Transition<SharedState>(
                 "Main",
-                new Transition(
+                new Condition<SharedState>(
+                    "No more values",
+                    x =>
+                    {
+                        return x.Position >= x.Values.Count;
+                    }),
+                new Condition<SharedState>(
                     "Null or empty",
-                    (x, y) =>
+                    x =>
                     {
-                        return string.IsNullOrEmpty(x);
+                        return string.IsNullOrEmpty(x.CurrentValue);
                     }),
-                new Transition(
+                new Condition<SharedState>(
                     "Starts with slash",
-                    (x, y) =>
+                    x =>
                     {
-                        return x[0] == '/';
+                        return x.CurrentValue[0] == '/';
                     }),
-                new Transition(
+                new Condition<SharedState>(
                     "Value",
-                    (x, y) =>
+                    x =>
                     {
-                        return y.CurrentArgument != null;
+                        return x.CurrentArgument != null;
                     }),
-                new Transition(
+                new Condition<SharedState>(
                     "Unparented value",
-                    (x, y) =>
+                    x =>
                     {
                         return true;
                     }));
 
-            StateMachine stateMachine = new StateMachine(
-                arguments,
+            StateMachine<SharedState> stateMachine = new StateMachine<SharedState>(
                 main,
-                new List<State>()
+                new List<Transition<SharedState>>()
                 {
                     main,
                     nullOrEmpty,
                     startsWithSlash,
                     value,
                     unparentedValue,
-                    notEnoughOperands
-                });
+                    notEnoughOperands,
+                    noMoreValues
+                },
+                () => new SharedState(arguments, values));
 
-            stateMachine.Run(values);
+            SharedState finalState = stateMachine.Run();
 
-            return stateMachine.Results.ToParseResult();
+            ////if (finalState.CurrentArgument != null)
+            ////{
+            ////    if ((finalState.Position - finalState.PositionAtTimeOfLastArgumentSet)
+            ////        < finalState.CurrentArgument.OperandCount.LowerBound)
+            ////    {
+            ////        throw new InvalidOperationException(
+            ////            $"Argument '{finalState.CurrentArgument.HumanReadableName}' expected at least {finalState.CurrentArgument.OperandCount.LowerBound} values.");
+            ////    }
+            ////}
+
+            return finalState.Results.ToParseResult();
         }
 
-        private class MutableParseResult
+        private class SharedState
         {
-            public MutableParseResult()
-            {
-                this.Order = new List<Argument>();
-                this.ParentedValues = new ParentedValues();
-                this.UnparentedValues = new UnparentedValues();
-            }
-
-            public List<Argument> Order { get; }
-
-            public ParentedValues ParentedValues { get; }
-
-            public UnparentedValues UnparentedValues { get; }
-
-            public ParseResult ToParseResult()
-            {
-                return new ParseResult(
-                    this.Order,
-                    this.ParentedValues.ToDictionary(),
-                    this.UnparentedValues.ToList());
-            }
-        }
-
-        private class StateMachine
-        {
-            private readonly IReadOnlyDictionary<string, State> states;
-            private State currentState;
             private Argument? currentArgument;
-            private int positionAtTimeOfLastArgumentSet;
 
-            public StateMachine(
+            public SharedState(
                 IReadOnlySet<Argument> arguments,
-                State initialState,
-                IReadOnlyList<State> states)
+                IReadOnlyList<string> values)
             {
                 this.Arguments = arguments;
-                this.currentState = initialState;
-                this.states = states.ToDictionary(x => x.Name, x => x);
+                this.Values = values;
 
-                this.Position = 0;
-                this.CurrentArgument = null;
+                this.currentArgument = null;
                 this.Results = new MutableParseResult();
-                this.positionAtTimeOfLastArgumentSet = 0;
+                this.Position = 0;
+                this.PositionAtTimeOfLastArgumentSet = 0;
             }
 
             public IReadOnlySet<Argument> Arguments { get; }
+
+            public IReadOnlyList<string> Values { get; }
 
             public MutableParseResult Results { get; }
 
             public int Position { get; set; }
 
-            public int PositionAtTimeOfLastArgumentSet => this.positionAtTimeOfLastArgumentSet;
+            public int PositionAtTimeOfLastArgumentSet { get; private set; }
 
             public Argument? CurrentArgument
             {
@@ -265,69 +269,11 @@ namespace Drexel.Arguments.Parsers
                 set
                 {
                     this.currentArgument = value;
-                    this.positionAtTimeOfLastArgumentSet = this.Position;
+                    this.PositionAtTimeOfLastArgumentSet = this.Position;
                 }
             }
 
-            public void Run(IReadOnlyList<string> values)
-            {
-                do
-                {
-                    foreach (Transition transition in this.currentState.Transitions)
-                    {
-                        if (transition.Condition.Invoke(values[this.Position], this))
-                        {
-                            this.currentState = this.states[transition.TransitionTo];
-                            break;
-                        }
-                    }
-                }
-                while (this.Position < values.Count);
-
-                if (this.currentArgument != null)
-                {
-                    if ((this.Position - this.PositionAtTimeOfLastArgumentSet) < this.CurrentArgument.OperandCount.LowerBound)
-                    {
-                        throw new InvalidOperationException(
-                            $"Argument '{this.CurrentArgument.HumanReadableName}' expected at least {this.CurrentArgument.OperandCount.LowerBound} values.");
-                    }
-                }
-            }
-        }
-
-        private class State
-        {
-            public State(
-                string name,
-                params Transition[] transitionParams)
-                : this(name, transitions: transitionParams)
-            {
-            }
-
-            public State(
-                string name,
-                IReadOnlyList<Transition> transitions)
-            {
-                this.Name = name;
-                this.Transitions = transitions;
-            }
-
-            public string Name { get; }
-
-            public IReadOnlyList<Transition> Transitions { get; }
-        }
-
-        private class Transition
-        {
-            public Transition(string transitionTo, Func<string, StateMachine, bool> condition)
-            {
-                this.Condition = condition;
-                this.TransitionTo = transitionTo;
-            }
-
-            public Func<string, StateMachine, bool> Condition { get; }
-
-            public string TransitionTo { get; }
+            public string CurrentValue => this.Values[this.Position];
         }
     }
 }
