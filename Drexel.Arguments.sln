@@ -1,48 +1,36 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2002
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drexel.Arguments", "Drexel.Arguments\Drexel.Arguments.csproj", "{B0609534-952A-480F-8884-D01C661370B9}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CB323AEC-5327-477C-92EB-706F3BA5C311}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7DE247C4-D748-435A-B12A-842745840BA1}"
 	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
 		LICENSE = LICENSE
 		README.md = README.md
-		StrongNamingKey.snk = StrongNamingKey.snk
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".StyleCop", ".StyleCop", "{44564CE8-B380-4D9C-A00C-0D9FEF0518C7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9BC5F307-4892-41B9-A289-BF9194AF03A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{003A06FC-C989-48E1-9DA7-F206E419F0B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".StyleCop", ".StyleCop", "{DB8C7A6F-8C93-4D5B-8D8D-0A77F5BFE130}"
 	ProjectSection(SolutionItems) = preProject
-		.StyleCop\ImageSquirrel.ruleset = .StyleCop\ImageSquirrel.ruleset
-		.StyleCop\ImageSquirrel_MSTest.ruleset = .StyleCop\ImageSquirrel_MSTest.ruleset
+		.StyleCop\CodeAnalysisDictionary.xml = .StyleCop\CodeAnalysisDictionary.xml
+		.StyleCop\Drexel.Arguments.ruleset = .StyleCop\Drexel.Arguments.ruleset
+		.StyleCop\Drexel.Arguments.Tests.ruleset = .StyleCop\Drexel.Arguments.Tests.ruleset
 		.StyleCop\stylecop.json = .StyleCop\stylecop.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drexel.Arguments.External", "Drexel.Arguments.External\Drexel.Arguments.External.csproj", "{2783188D-D81A-4DDF-93F9-81895BF589E7}"
-EndProject
 Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B0609534-952A-480F-8884-D01C661370B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B0609534-952A-480F-8884-D01C661370B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B0609534-952A-480F-8884-D01C661370B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B0609534-952A-480F-8884-D01C661370B9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2783188D-D81A-4DDF-93F9-81895BF589E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2783188D-D81A-4DDF-93F9-81895BF589E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2783188D-D81A-4DDF-93F9-81895BF589E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2783188D-D81A-4DDF-93F9-81895BF589E7}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{44564CE8-B380-4D9C-A00C-0D9FEF0518C7} = {CB323AEC-5327-477C-92EB-706F3BA5C311}
+		{DB8C7A6F-8C93-4D5B-8D8D-0A77F5BFE130} = {7DE247C4-D748-435A-B12A-842745840BA1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {C006ED85-2BB5-49A4-B2EF-A3136EF9687C}
+		SolutionGuid = {A6A2452A-D671-4828-96DF-201B033E990A}
 	EndGlobalSection
 EndGlobal
