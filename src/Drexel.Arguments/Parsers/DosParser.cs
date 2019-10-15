@@ -103,7 +103,19 @@ namespace Drexel.Arguments.Parsers
                     "Main",
                     x =>
                     {
-                        x.Results.UnparentedValues.Add(x.CurrentArgument, x.CurrentValue);
+                        if (x.CurrentArgument is null)
+                        {
+                            x.Results.UnparentedValues.Add(
+                                Position.Front,
+                                x.CurrentValue);
+                        }
+                        else
+                        {
+                            x.Results.UnparentedValues.Add(
+                                x.CurrentArgument,
+                                x.CurrentValue);
+                        }
+
                         x.Position++;
                         return true;
                     }));
@@ -216,7 +228,7 @@ namespace Drexel.Arguments.Parsers
                     if (character == '/')
                     {
                         throw new ArgumentException(
-                            "DOS-style parsing requires names not start with '/'.");
+                            "DOS-style parsing requires short names not start with '/'.");
                     }
 
                     if (!characters.Add(character))
