@@ -3,26 +3,25 @@
 namespace Drexel.Arguments
 {
     /// <summary>
-    /// Represents the operand count for an argument.
+    /// Represents the boundaries of a count of some scalar.
     /// </summary>
-    public sealed class OperandCount : IEquatable<OperandCount>
+    public sealed class CountBounds : IEquatable<CountBounds>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref=" OperandCount"/> class.
+        /// Initializes a new instance of the <see cref=" CountBounds"/> class.
         /// </summary>
         /// <param name="lowerBound">
-        /// The lower bound on the number of operands allowed.
+        /// The lower bound on the count allowed.
         /// </param>
         /// <param name="upperBound">
-        /// When <see langword="null"/>, indicates that no upper bound on the number of operands exists. Otherwise, the
-        /// maximumm allowed number of operands. This value must be larger than <paramref name="lowerBound"/>, if it is
-        /// non-<see langword="null"/>.
+        /// When <see langword="null"/>, indicates that no upper bound exists. Otherwise, the maximumm allowed count.
+        /// This value must be larger than <paramref name="lowerBound"/>, if it is non-<see langword="null"/>.
         /// </param>
         /// <exception cref="ArgumentException">
         /// Thrown when <paramref name="lowerBound"/> is less than 0, or <paramref name="upperBound"/> is less than
         /// <paramref name="lowerBound"/>.
         /// </exception>
-        public OperandCount(long lowerBound = 1, long? upperBound = null)
+        public CountBounds(long lowerBound = 1, long? upperBound = null)
         {
             if (lowerBound < 0)
             {
@@ -34,7 +33,7 @@ namespace Drexel.Arguments
             if (upperBound.HasValue && upperBound.Value < lowerBound)
             {
                 throw new ArgumentException(
-                    "Upper bound of allowed operand count cannot be less than lower bound.",
+                    "Upper bound of allowed count cannot be less than lower bound.",
                     nameof(upperBound));
             }
 
@@ -43,46 +42,46 @@ namespace Drexel.Arguments
         }
 
         /// <summary>
-        /// Gets an <see cref="OperandCount"/> that corresponds to 0 operands (AKA, a "flag").
+        /// Gets a <see cref="CountBounds"/> that corresponds to a count of exactly zero (AKA, a "flag").
         /// </summary>
-        public static OperandCount Flag { get; } = new OperandCount(0, 0);
+        public static CountBounds Flag { get; } = new CountBounds(0, 0);
 
         /// <summary>
-        /// Gets an <see cref="OperandCount"/> that corresponds to a single operand.
+        /// Gets a <see cref="CountBounds"/> that corresponds to a count of exactly one.
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "Naming",
             "CA1720:Identifier contains type name",
             Justification = "Doesn't apply to this situation")]
-        public static OperandCount Single { get; } = new OperandCount(1, 1);
+        public static CountBounds Single { get; } = new CountBounds(1, 1);
 
         /// <summary>
-        /// Gets the lower bound on the allowed number of operands.
+        /// Gets the lower bound of the count.
         /// </summary>
         public long LowerBound { get; }
 
         /// <summary>
-        /// Gets the upper bound on the allowed number of operands, if one exists.
+        /// Gets the upper bound of the count, if one exists.
         /// </summary>
         public long? UpperBound { get; }
 
         /// <summary>
-        /// Compares two <see cref="OperandCount"/>s.
+        /// Compares two <see cref="CountBounds"/>s.
         /// </summary>
         /// <param name="left">
-        /// An <see cref="OperandCount"/> to compare.
+        /// An <see cref="CountBounds"/> to compare.
         /// </param>
         /// <param name="right">
-        /// An <see cref="OperandCount"/> to compare.
+        /// An <see cref="CountBounds"/> to compare.
         /// </param>
         /// <returns>
         /// <see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> are equal; otherwise,
         /// <see langword="false"/>.
         /// </returns>
         /// <remarks>
-        /// The equivalent method for this operator is <see cref="OperandCount.Equals(OperandCount)"/>.
+        /// The equivalent method for this operator is <see cref="CountBounds.Equals(CountBounds)"/>.
         /// </remarks>
-        public static bool operator ==(OperandCount left, OperandCount right)
+        public static bool operator ==(CountBounds left, CountBounds right)
         {
             if (left is null)
             {
@@ -95,22 +94,22 @@ namespace Drexel.Arguments
         }
 
         /// <summary>
-        /// Compares two <see cref="OperandCount"/>s.
+        /// Compares two <see cref="CountBounds"/>s.
         /// </summary>
         /// <param name="left">
-        /// An <see cref="OperandCount"/> to compare.
+        /// An <see cref="CountBounds"/> to compare.
         /// </param>
         /// <param name="right">
-        /// An <see cref="OperandCount"/> to compare.
+        /// An <see cref="CountBounds"/> to compare.
         /// </param>
         /// <returns>
         /// <see langword="true"/> if <paramref name="left"/> and <paramref name="right"/> differ; otherwise,
         /// <see langword="false"/>.
         /// </returns>
         /// <remarks>
-        /// The equivalent method for this operator is <see cref="OperandCount.Equals(OperandCount)"/>.
+        /// The equivalent method for this operator is <see cref="CountBounds.Equals(CountBounds)"/>.
         /// </remarks>
-        public static bool operator !=(OperandCount left, OperandCount right)
+        public static bool operator !=(CountBounds left, CountBounds right)
         {
             return !(left == right);
         }
@@ -128,7 +127,7 @@ namespace Drexel.Arguments
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (obj is OperandCount asOperandCount)
+            if (obj is CountBounds asOperandCount)
             {
                 return this.Equals(asOperandCount);
             }
@@ -137,17 +136,17 @@ namespace Drexel.Arguments
         }
 
         /// <summary>
-        /// Returns a value indicating whether this instance is equal to a specified <see cref="OperandCount"/>
+        /// Returns a value indicating whether this instance is equal to a specified <see cref="CountBounds"/>
         /// <paramref name="other"/>.
         /// </summary>
         /// <param name="other">
-        /// An <see cref="OperandCount"/> to compare with this instance.
+        /// An <see cref="CountBounds"/> to compare with this instance.
         /// </param>
         /// <returns>
-        /// <see langword="true"/> if this instance was equal to the specified <see cref="OperandCount"/>
+        /// <see langword="true"/> if this instance was equal to the specified <see cref="CountBounds"/>
         /// <paramref name="other"/>; otherwise, <see langword="false"/>.
         /// </returns>
-        public bool Equals(OperandCount other)
+        public bool Equals(CountBounds other)
         {
             if (other is null)
             {

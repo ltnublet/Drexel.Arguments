@@ -79,7 +79,7 @@ namespace Drexel.Arguments.Parsers
                     {
                         // TODO: This means they did something like `/flag:Value`. This seems illegal to me, but if
                         // we returned true instead of throwing, we could treat `Value` as unparented instead.
-                        if (x.CurrentArgument != null && x.CurrentArgument.OperandCount == OperandCount.Flag)
+                        if (x.CurrentArgument != null && x.CurrentArgument.OperandCount == CountBounds.Flag)
                         {
                             throw new InvalidOperationException(
                                 "Flag argument cannot have attached value.");

@@ -32,7 +32,7 @@ namespace Sandbox.Framework
                         new List<string>() { "Bravo", "bravo" },
                         "Bravo",
                         false,
-                        new OperandCount(2, 3)),
+                        new CountBounds(2, 3)),
                     new RuntimeArgument(
                         "Charlie",
                         new List<string>() { "C", "c" },
@@ -48,31 +48,31 @@ namespace Sandbox.Framework
                         new List<string>() { "E", "e" },
                         new List<string>() { "Echo", "echo" },
                         "Echo",
-                        operandCount: OperandCount.Flag),
+                        operandCount: CountBounds.Flag),
                     new RuntimeArgument(
                         "Foxtrot",
                         new List<string>() { "F", "f" },
                         new List<string>() { "Foxtrot", "foxtrot" },
                         "Foxtrot",
-                        operandCount: OperandCount.Flag),
+                        operandCount: CountBounds.Flag),
                     new RuntimeArgument(
                         "Golf",
                         new List<string>() { "G", "g" },
                         new List<string>() { "Golf", "golf" },
                         "Golf",
-                        operandCount: OperandCount.Flag),
+                        operandCount: CountBounds.Flag),
                     new RuntimeArgument(
                         "Hotel",
                         new List<string>() { "H", "h" },
                         new List<string>() { "Hotel", "hotel" },
                         "Hotel",
-                        operandCount: OperandCount.Flag),
+                        operandCount: CountBounds.Flag),
                     new RuntimeArgument(
                         "India",
                         new List<string>() { "I", "i" },
                         new List<string>() { "India", "india" },
                         "India",
-                        operandCount: new OperandCount(2, null)),
+                        operandCount: new CountBounds(2, null)),
                 });
 
             args = new string[]
@@ -117,7 +117,7 @@ namespace Sandbox.Framework
                         new List<string>(),
                         "B",
                         false,
-                        new OperandCount(2, 3)),
+                        new CountBounds(2, 3)),
                     new RuntimeArgument(
                         "C",
                         new List<string>() { "C" },
@@ -128,31 +128,31 @@ namespace Sandbox.Framework
                         new List<string>() { "E" },
                         new List<string>(),
                         "E",
-                        operandCount: OperandCount.Flag),
+                        operandCount: CountBounds.Flag),
                     new RuntimeArgument(
                         "F",
                         new List<string>() { "F" },
                         new List<string>(),
                         "F",
-                        operandCount: OperandCount.Flag),
+                        operandCount: CountBounds.Flag),
                     new RuntimeArgument(
                         "G",
                         new List<string>() { "G" },
                         new List<string>(),
                         "G",
-                        operandCount: OperandCount.Flag),
+                        operandCount: CountBounds.Flag),
                     new RuntimeArgument(
                         "H",
                         new List<string>() { "H" },
                         new List<string>(),
                         "H",
-                        operandCount: OperandCount.Flag),
+                        operandCount: CountBounds.Flag),
                     new RuntimeArgument(
                         "I",
                         new List<string>() { "I" },
                         new List<string>(),
                         "I",
-                        operandCount: new OperandCount(2, null)),
+                        operandCount: new CountBounds(2, null)),
                 });
 
             args = new string[]
@@ -202,7 +202,7 @@ namespace Sandbox.Framework
                         new List<string>(),
                         "B",
                         false,
-                        new OperandCount(2, 3)),
+                        new CountBounds(2, 3)),
                     new RuntimeArgument(
                         "C",
                         new List<string>() { "C" },
@@ -213,31 +213,31 @@ namespace Sandbox.Framework
                         new List<string>() { "E" },
                         new List<string>(),
                         "E",
-                        operandCount: OperandCount.Flag),
+                        operandCount: CountBounds.Flag),
                     new RuntimeArgument(
                         "F",
                         new List<string>() { "F" },
                         new List<string>(),
                         "F",
-                        operandCount: OperandCount.Flag),
+                        operandCount: CountBounds.Flag),
                     new RuntimeArgument(
                         "G",
                         new List<string>() { "G" },
                         new List<string>(),
                         "G",
-                        operandCount: OperandCount.Flag),
+                        operandCount: CountBounds.Flag),
                     new RuntimeArgument(
                         "H",
                         new List<string>() { "H" },
                         new List<string>(),
                         "H",
-                        operandCount: OperandCount.Flag),
+                        operandCount: CountBounds.Flag),
                     new RuntimeArgument(
                         "I",
                         new List<string>() { "I" },
                         new List<string>(),
                         "I",
-                        operandCount: new OperandCount(2, null)),
+                        operandCount: new CountBounds(2, null)),
                 });
 
             args = new string[]

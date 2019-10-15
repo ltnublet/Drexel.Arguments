@@ -14,14 +14,14 @@ namespace Drexel.Arguments
             IReadOnlyInvariantSet<string> longNames,
             string description,
             bool required = false,
-            OperandCount? operandCount = null)
+            CountBounds? operandCount = null)
             : base(
                   humanReadableName,
                   shortNames,
                   longNames,
                   description,
                   required,
-                  operandCount ?? OperandCount.Single)
+                  operandCount ?? CountBounds.Single)
         {
         }
 
@@ -31,7 +31,7 @@ namespace Drexel.Arguments
             IReadOnlyList<string> longNames,
             string description,
             bool required = false,
-            OperandCount? operandCount = null)
+            CountBounds? operandCount = null)
             : this(
                   humanReadableName,
                   RuntimeArgument.ToSet(shortNames, nameof(shortNames)),

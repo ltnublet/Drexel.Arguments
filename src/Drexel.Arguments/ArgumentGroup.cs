@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Drexel.Arguments
 {
@@ -15,13 +14,17 @@ namespace Drexel.Arguments
 
         public void Invoke(ParseResult results)
         {
-            ////foreach (KeyValuePair<Argument, ArgumentCallbacks> kvp in this.callbacks)
-            ////{
-            ////    if (results.ParentedValues.TryGetValue(kvp.Key, out IReadOnlyList<string> values))
-            ////    {
-
-            ////    }
-            ////}
+            foreach (KeyValuePair<Argument, ArgumentCallbacks> kvp in this.callbacks)
+            {
+                if (results.ParentedValues.ContainsKey(kvp.Key))
+                {
+                    kvp.Value.OnSupplied?.Invoke(kvp.Key, results);
+                }
+                else
+                {
+                    kvp.Value.OnOmitted?.Invoke(kvp.Key, results);
+                }
+            }
         }
     }
 }

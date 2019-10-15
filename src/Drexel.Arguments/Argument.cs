@@ -38,7 +38,7 @@ namespace Drexel.Arguments
             IReadOnlyInvariantSet<string> longNames,
             string description,
             bool required,
-            OperandCount operandCount)
+            CountBounds operandCount)
         {
             if (null == humanReadableName)
             {
@@ -116,9 +116,9 @@ namespace Drexel.Arguments
         public bool Required { get; }
 
         /// <summary>
-        /// Gets the <see cref="Arguments.OperandCount"/> of this argument, indicating restrictions on the number of operands
-        /// this argument can be satisfied by.
+        /// Gets the <see cref="Arguments.CountBounds"/> of this argument, indicating the minimum and maximum count of
+        /// operands required to satisfy this argument.
         /// </summary>
-        public OperandCount OperandCount { get; }
+        public CountBounds OperandCount { get; }
     }
 }
