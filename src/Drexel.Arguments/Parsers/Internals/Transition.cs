@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Drexel.Arguments.Parsers.Internals
 {
+    [DebuggerDisplay("{Name,nq}")]
     internal class Transition<T>
     {
         public Transition(

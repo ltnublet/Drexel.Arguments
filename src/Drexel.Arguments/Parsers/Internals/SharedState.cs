@@ -48,6 +48,11 @@ namespace Drexel.Arguments.Parsers.Internals
             get => this.currentArgument;
             set
             {
+                if (this.currentArgument != null && this.currentArgument != value)
+                {
+                    this.Results.ParentedValues.ExplicitAdvance();
+                }
+
                 this.currentArgument = value;
                 this.PositionAtTimeOfLastArgumentSet = this.Position;
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Drexel.Arguments
 {
@@ -22,7 +23,7 @@ namespace Drexel.Arguments
         /// </param>
         public ParseResult(
             IReadOnlyList<Argument> order,
-            IReadOnlyDictionary<Argument, IReadOnlyList<string>> parentedValues,
+            IReadOnlyDictionary<Argument, IReadOnlyList<IReadOnlyList<string>>> parentedValues,
             IReadOnlyList<KeyValuePair<Argument?, IReadOnlyList<string>>> unparentedValues)
         {
             this.Order = order ?? throw new ArgumentNullException(nameof(order));
@@ -38,7 +39,7 @@ namespace Drexel.Arguments
         /// <summary>
         /// Gets the mapping between arguments and their parsed results.
         /// </summary>
-        public IReadOnlyDictionary<Argument, IReadOnlyList<string>> ParentedValues { get; }
+        public IReadOnlyDictionary<Argument, IReadOnlyList<IReadOnlyList<string>>> ParentedValues { get; }
 
         /// <summary>
         /// Gets any unparented values that were found during parsing. Note that a key of null means that the
