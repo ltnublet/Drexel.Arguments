@@ -8,6 +8,23 @@
     <CodeAnalysisRuleSet>..\..\.StyleCop\Drexel.Arguments.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Version>0.0.9-alpha</Version>
+    <Authors>Max Drexel</Authors>
+    <Description>Library for simple user-supplied argument handling.</Description>
+    <Copyright>Copyright 2017-2019</Copyright>
+    <PackageLicenseUrl>https://github.com/mdrexel/Drexel.Arguments/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/mdrexel/Drexel.Arguments</PackageProjectUrl>
+    <PackageTags>argument arguments option options parameter parameters drexel</PackageTags>
+    <PackageReleaseNotes>0.0.9-alpha: Beginning of a rewrite to remove static state and support improved parsing.
+0.0.8-alpha: Actually included the xmldoc output this time.
+0.0.7-alpha: Enabled xmldoc output for Drexel.Arguments project (all those pretty comments were going to waste!)
+0.0.6-alpha: Exposed the IArgument collection contained within the Context, so that retrieving the argument details is easy.
+0.0.5-alpha: Added support for required arguments, and restricting ArgumentAttribute detection to registered types.
+0.0.4-alpha: Added the option to supply manual arguments, so that it is possible for an argument whose behavior changes at runtime.
+    </PackageReleaseNotes>
+  </PropertyGroup>
+
   <ItemGroup>
     <AdditionalFiles Include="..\..\.StyleCop\CodeAnalysisDictionary.xml" Link="CodeAnalysisDictionary.xml" />
     <AdditionalFiles Include="..\..\.StyleCop\stylecop.json" Link="stylecop.json" />

@@ -16,18 +16,19 @@ namespace Drexel.Arguments.Parsers.Internals
         }
 
         /// <summary>
-        /// Indicates that the state should check the next transition.
+        /// Gets a <see cref="ConditionResult"/> indicating that the state should check the next transition.
         /// </summary>
         public static ConditionResult Continue { get; } = new ConditionResult(0, nameof(Continue));
 
         /// <summary>
-        /// Indicates that the state machine should stop evaluating conditions, and transition into the state
-        /// specified by this transition.
+        /// Gets a <see cref="ConditionResult"/> indicating that the state machine should stop evaluating conditions,
+        /// and should transition into the state specified by this transition.
         /// </summary>
         public static ConditionResult Break { get; } = new ConditionResult(1, nameof(Break));
 
         /// <summary>
-        /// Indicates that the state machine should stop evaluating transitions.
+        /// Gets a <see cref="ConditionResult"/> indicating that that the state machine should stop evaluating
+        /// transitions.
         /// </summary>
         public static ConditionResult Stop { get; } = new ConditionResult(2, nameof(Stop));
 

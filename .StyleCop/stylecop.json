@@ -9,6 +9,12 @@
     "orderingRules": {
       "systemUsingDirectivesFirst": true,
       "usingDirectivesPlacement": "outsideNamespace"
+    },
+    "documentationRules": {
+      "documentExposedElements": true,
+      "documentInternalElements": false,
+      "documentPrivateElements": false,
+      "documentPrivateFields": false
     }
   }
 }
