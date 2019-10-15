@@ -31,7 +31,6 @@ namespace Sandbox.Framework
                         new List<string>() { "B", "b" },
                         new List<string>() { "Bravo", "bravo" },
                         "Bravo",
-                        false,
                         new CountBounds(2, 3)),
                     new RuntimeArgument(
                         "Charlie",
@@ -116,7 +115,6 @@ namespace Sandbox.Framework
                         new List<string>() { "B" },
                         new List<string>(),
                         "B",
-                        false,
                         new CountBounds(2, 3)),
                     new RuntimeArgument(
                         "C",
@@ -201,7 +199,6 @@ namespace Sandbox.Framework
                         new List<string>() { "B" },
                         new List<string>(),
                         "B",
-                        false,
                         new CountBounds(2, 3)),
                     new RuntimeArgument(
                         "C",

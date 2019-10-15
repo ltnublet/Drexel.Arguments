@@ -17,7 +17,7 @@ namespace Drexel.Arguments
 
         private readonly IParser parser;
 
-        public ArgumentParser(ParseStyle style, IReadOnlySet<Argument> arguments)
+        public ArgumentParser(ParseStyle style, IReadOnlyInvariantSet<Argument> arguments)
         {
             if (ArgumentParser.NotImplementedStyles.Contains(style))
             {
@@ -41,7 +41,7 @@ namespace Drexel.Arguments
             this.parser.ThrowIfIllegal(arguments);
         }
 
-        public IReadOnlySet<Argument> Arguments { get; }
+        public IReadOnlyInvariantSet<Argument> Arguments { get; }
 
         public ParseStyle Style { get; }
 

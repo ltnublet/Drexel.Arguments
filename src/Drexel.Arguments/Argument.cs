@@ -26,9 +26,6 @@ namespace Drexel.Arguments
         /// <param name="description">
         /// The description of the argument.
         /// </param>
-        /// <param name="required">
-        /// Indicates whether the argument is required.
-        /// </param>
         /// <param name="operandCount">
         /// Operand count limitations associated with this argument.
         /// </param>
@@ -37,7 +34,6 @@ namespace Drexel.Arguments
             IReadOnlyInvariantSet<string> shortNames,
             IReadOnlyInvariantSet<string> longNames,
             string description,
-            bool required,
             CountBounds operandCount)
         {
             if (null == humanReadableName)
@@ -85,7 +81,6 @@ namespace Drexel.Arguments
             this.ShortNames = shortNames;
             this.LongNames = longNames;
             this.Description = description;
-            this.Required = required;
             this.OperandCount = operandCount;
         }
 
@@ -109,11 +104,6 @@ namespace Drexel.Arguments
         /// Gets the description of this argument.
         /// </summary>
         public string Description { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether this argument is required.
-        /// </summary>
-        public bool Required { get; }
 
         /// <summary>
         /// Gets the <see cref="Arguments.CountBounds"/> of this argument, indicating the minimum and maximum count of
