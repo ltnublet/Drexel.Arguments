@@ -7,10 +7,23 @@ namespace Drexel.Arguments
 {
     public sealed class ArgumentParser
     {
+        private static readonly IReadOnlyInvariantSet<ParseStyle> NotImplementedStyles =
+            new SetAdapter<ParseStyle>(new HashSet<ParseStyle>())
+            {
+                ParseStyle.GNU,
+                ParseStyle.Unity,
+                ParseStyle.Windows
+            };
+
         private readonly IParser parser;
 
         public ArgumentParser(ParseStyle style, IReadOnlySet<Argument> arguments)
         {
+            if (ArgumentParser.NotImplementedStyles.Contains(style))
+            {
+                throw new NotImplementedException("Specified parsing style is not yet implemented.");
+            }
+
             this.Arguments = arguments ?? throw new ArgumentNullException(nameof(arguments));
             this.Style = style;
 
