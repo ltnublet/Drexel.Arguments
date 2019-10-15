@@ -12,7 +12,92 @@ namespace Sandbox.Framework
     {
         public static void Main(string[] args)
         {
-            Program.PosixMain(args);
+            Program.MsBuildMain(args);
+        }
+
+        public static void MsBuildMain(string[] args)
+        {
+            ArgumentParser parser = new ArgumentParser(
+                ParseStyle.MSBuild,
+                new SetAdapter<Argument>(new HashSet<Argument>())
+                {
+                    new RuntimeArgument(
+                        "Alpha",
+                        new List<string>() { "A", "a" },
+                        new List<string>() { "Alpha", "alpha" },
+                        "Alpha"),
+                    new RuntimeArgument(
+                        "Bravo",
+                        new List<string>() { "B", "b" },
+                        new List<string>() { "Bravo", "bravo" },
+                        "Bravo",
+                        false,
+                        new OperandCount(2, 3)),
+                    new RuntimeArgument(
+                        "Charlie",
+                        new List<string>() { "C", "c" },
+                        new List<string>() { "Charlie", "charlie" },
+                        "Charlie"),
+                    new RuntimeArgument(
+                        "Delta",
+                        new List<string>() { "D", "d" },
+                        new List<string>() { "Delta", "delta" },
+                        "Delta"),
+                    new RuntimeArgument(
+                        "Echo",
+                        new List<string>() { "E", "e" },
+                        new List<string>() { "Echo", "echo" },
+                        "Echo",
+                        operandCount: OperandCount.Flag),
+                    new RuntimeArgument(
+                        "Foxtrot",
+                        new List<string>() { "F", "f" },
+                        new List<string>() { "Foxtrot", "foxtrot" },
+                        "Foxtrot",
+                        operandCount: OperandCount.Flag),
+                    new RuntimeArgument(
+                        "Golf",
+                        new List<string>() { "G", "g" },
+                        new List<string>() { "Golf", "golf" },
+                        "Golf",
+                        operandCount: OperandCount.Flag),
+                    new RuntimeArgument(
+                        "Hotel",
+                        new List<string>() { "H", "h" },
+                        new List<string>() { "Hotel", "hotel" },
+                        "Hotel",
+                        operandCount: OperandCount.Flag),
+                    new RuntimeArgument(
+                        "India",
+                        new List<string>() { "I", "i" },
+                        new List<string>() { "India", "india" },
+                        "India",
+                        operandCount: new OperandCount(2, null)),
+                });
+
+            args = new string[]
+            {
+                "unparented1",
+                "/A",
+                "alpha",
+                "unparented2",
+                "-b",
+                "beta1",
+                "beta2",
+                "beta3",
+                "-Echo",
+                "-F",
+                "/Golf",
+                "unparented3",
+                "-C",
+                "gamma",
+                "-H",
+                "-India:iota1:continued",
+                "iota2",
+                "iota3",
+            };
+
+            ParseResult result = parser.Parse(args);
         }
 
         public static void PosixMain(string[] args)

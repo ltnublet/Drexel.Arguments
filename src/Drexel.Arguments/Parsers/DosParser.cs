@@ -216,6 +216,12 @@ namespace Drexel.Arguments.Parsers
             HashSet<char> characters = new HashSet<char>();
             foreach (Argument argument in arguments)
             {
+                if (argument.ShortNames.Count < 1)
+                {
+                    throw new ArgumentException(
+                        "DOS-style parsing requires that arguments have at least one short name.");
+                }
+
                 foreach (string shortName in argument.ShortNames)
                 {
                     if (shortName.Length > 1)
