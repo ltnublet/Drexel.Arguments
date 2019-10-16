@@ -157,8 +157,7 @@ namespace Drexel.Arguments.Parsers
                         {
                             return true;
                         }
-                        else if ((x.Position - x.PositionAtTimeOfLastArgumentSet)
-                            > x.CurrentArgument.OperandCount.UpperBound)
+                        else if (x.ValuesAddedToCurrentArgument >= x.CurrentArgument.OperandCount.UpperBound)
                         {
                             return true;
                         }
