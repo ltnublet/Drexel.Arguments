@@ -15,6 +15,43 @@ namespace Sandbox.Framework
             Program.MsBuildMain(args);
         }
 
+        public static void MsBuildTest(string[] args)
+        {
+            ArgumentParser parser = new ArgumentParser(
+                ParseStyle.MSBuild,
+                new SetAdapter<Argument>(new HashSet<Argument>())
+                {
+                    new RuntimeArgument(
+                        "ParameterA",
+                        new List<string>() { "a" },
+                        new List<string>() { "ParameterA" },
+                        "A parameter.",
+                        new CountBounds(1, null)),
+                    new RuntimeArgument(
+                        "ParameterB",
+                        new List<string>() { "b" },
+                        new List<string>() { "ParameterB" },
+                        "Another parameter.",
+                        new CountBounds(1, null)),
+                });
+
+            args = new string[]
+            {
+                "/a:Foo",
+                "bar",
+                "baz",
+                "/b:1",
+                "2",
+                "3",
+                "/a:Skibble",
+                "skobble",
+                "/a:Skidoodle",
+                "skidoddle",
+            };
+
+            ParseResult result = parser.Parse(args);
+        }
+
         public static void MsBuildMain(string[] args)
         {
             ArgumentParser parser = new ArgumentParser(
@@ -77,19 +114,24 @@ namespace Sandbox.Framework
             args = new string[]
             {
                 "unparented1",
-                "/A",
-                "alpha",
+                "/A:alpha",
                 "unparented2",
                 "-b",
                 "beta1",
                 "beta2",
                 "beta3",
+                "/b:beta4",
+                "beta5",
                 "-Echo",
                 "-F",
                 "/Golf",
                 "unparented3",
                 "-C",
                 "gamma",
+                "-B",
+                "beta6",
+                "beta7",
+                "beta8",
                 "-H",
                 "-India:iota1:continued",
                 "iota2",

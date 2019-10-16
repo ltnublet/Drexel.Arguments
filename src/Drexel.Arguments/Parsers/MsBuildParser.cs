@@ -63,8 +63,7 @@ namespace Drexel.Arguments.Parsers
                 new Condition<SharedState>(
                     "Not enough operands",
                     x => x.CurrentArgument != null
-                        && (x.Position - x.PositionAtTimeOfLastArgumentSet)
-                            <= x.CurrentArgument.OperandCount.LowerBound),
+                        && x.ValuesAddedToCurrentArgument < x.CurrentArgument.OperandCount.LowerBound),
                 new Condition<SharedState>(
                     "Main",
                     x =>
@@ -72,7 +71,7 @@ namespace Drexel.Arguments.Parsers
                         return ConditionResult.Stop;
                     }));
             Transition<SharedState> argumentContainsColon = new Transition<SharedState>(
-                "Argument contains colon",
+                "Argument contained colon",
                 new Condition<SharedState>(
                     "Unparented value",
                     x =>
@@ -101,13 +100,24 @@ namespace Drexel.Arguments.Parsers
                     x =>
                     {
                         Argument newArgument = CheckArgument(x.Arguments, x.CurrentValue);
-                        if (x.CurrentArgument != newArgument)
-                        {
-                            x.Results.Order.Add(newArgument);
-                        }
+                        x.Results.Order.Add(newArgument);
 
                         x.CurrentArgument = newArgument;
                         x.Position++;
+                        return true;
+                    }));
+            Transition<SharedState> setCurrentArgumentWithColon = new Transition<SharedState>(
+                "Set current argument with colon",
+                new Condition<SharedState>(
+                    "Argument contained colon",
+                    x =>
+                    {
+                        Argument newArgument = CheckArgument(
+                            x.Arguments,
+                            x.CurrentValue.Substring(0, x.CurrentValue.IndexOf(':')));
+
+                        x.Results.Order.Add(newArgument);
+                        x.CurrentArgument = newArgument;
                         return true;
                     }));
             Transition<SharedState> startsWithSlashOrHyphen = new Transition<SharedState>(
@@ -131,32 +141,18 @@ namespace Drexel.Arguments.Parsers
                         return false;
                     }),
                 new Condition<SharedState>(
-                    "Not enough operands",
-                    x => x.CurrentArgument != null
-                        && (x.Position - x.PositionAtTimeOfLastArgumentSet)
-                            <= x.CurrentArgument.OperandCount.LowerBound),
-                new Condition<SharedState>(
-                    "Argument contains colon",
+                    "Set current argument with colon",
                     x =>
                     {
-                        int indexOfColon = x.CurrentValue.IndexOf(':');
-                        if (indexOfColon < 0)
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            Argument newArgument = CheckArgument(
-                                x.Arguments,
-                                x.CurrentValue.Substring(0, indexOfColon));
-                            if (x.CurrentArgument != newArgument)
-                            {
-                                x.Results.Order.Add(newArgument);
-                            }
-
-                            x.CurrentArgument = newArgument;
-                            return true;
-                        }
+                        return x.CurrentValue.IndexOf(':') >= 0;
+                    }),
+                new Condition<SharedState>(
+                    "Not enough operands",
+                    x =>
+                    {
+                        bool notEnoughOperands = x.CurrentArgument != null
+                            && x.ValuesAddedToCurrentArgument < x.CurrentArgument.OperandCount.LowerBound;
+                        return notEnoughOperands;
                     }),
                 new Condition<SharedState>(
                     "Set current argument",
@@ -195,8 +191,7 @@ namespace Drexel.Arguments.Parsers
                         {
                             return true;
                         }
-                        else if ((x.Position - x.PositionAtTimeOfLastArgumentSet)
-                            > x.CurrentArgument.OperandCount.UpperBound)
+                        else if (x.ValuesAddedToCurrentArgument > x.CurrentArgument.OperandCount.UpperBound)
                         {
                             return true;
                         }
@@ -210,6 +205,7 @@ namespace Drexel.Arguments.Parsers
                     x =>
                     {
                         x.Results.ParentedValues.Add(x.CurrentArgument, x.CurrentValue);
+                        x.ValuesAddedToCurrentArgument++;
                         x.Position++;
                         return true;
                     }));
@@ -260,7 +256,8 @@ namespace Drexel.Arguments.Parsers
                     notEnoughOperands,
                     noMoreValues,
                     argumentContainsColon,
-                    setCurrentArgument
+                    setCurrentArgument,
+                    setCurrentArgumentWithColon
                 });
         }
 

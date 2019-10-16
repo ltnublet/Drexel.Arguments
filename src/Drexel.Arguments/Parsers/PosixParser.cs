@@ -106,10 +106,7 @@ namespace Drexel.Arguments.Parsers
                             {
                                 if (argument.ShortNames.Contains(character.ToString(CultureInfo.InvariantCulture)))
                                 {
-                                    if (x.CurrentArgument != argument)
-                                    {
-                                        x.Results.Order.Add(argument);
-                                    }
+                                    x.Results.Order.Add(argument);
 
                                     x.CurrentArgument = argument;
 

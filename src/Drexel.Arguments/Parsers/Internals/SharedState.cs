@@ -23,6 +23,7 @@ namespace Drexel.Arguments.Parsers.Internals
             this.Results = new MutableParseResult();
             this.Position = 0;
             this.PositionAtTimeOfLastArgumentSet = 0;
+            this.ValuesAddedToCurrentArgument = 0;
         }
 
         public IReadOnlySet<Argument> Arguments { get; }
@@ -48,15 +49,15 @@ namespace Drexel.Arguments.Parsers.Internals
             get => this.currentArgument;
             set
             {
-                if (this.currentArgument != null && this.currentArgument != value)
-                {
-                    this.Results.ParentedValues.ExplicitAdvance();
-                }
+                this.Results.ParentedValues.ExplicitAdvance();
 
                 this.currentArgument = value;
                 this.PositionAtTimeOfLastArgumentSet = this.Position;
+                this.ValuesAddedToCurrentArgument = 0;
             }
         }
+
+        public int ValuesAddedToCurrentArgument { get; set; }
 
         public string CurrentValue
         {

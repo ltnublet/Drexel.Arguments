@@ -35,8 +35,7 @@ namespace Drexel.Arguments.Parsers
                 new Condition<SharedState>(
                     "Not enough operands",
                     x => x.CurrentArgument != null
-                        && (x.Position - x.PositionAtTimeOfLastArgumentSet)
-                            <= x.CurrentArgument.OperandCount.LowerBound),
+                        && x.ValuesAddedToCurrentArgument < x.CurrentArgument.OperandCount.LowerBound),
                 new Condition<SharedState>(
                     "Main",
                     x =>
@@ -61,8 +60,7 @@ namespace Drexel.Arguments.Parsers
                 new Condition<SharedState>(
                     "Not enough operands",
                     x => x.CurrentArgument != null
-                        && (x.Position - x.PositionAtTimeOfLastArgumentSet)
-                            <= x.CurrentArgument.OperandCount.LowerBound),
+                        && x.ValuesAddedToCurrentArgument < x.CurrentArgument.OperandCount.LowerBound),
                 new Condition<SharedState>(
                     "Main",
                     x =>
@@ -75,10 +73,7 @@ namespace Drexel.Arguments.Parsers
                             {
                                 if (argument.ShortNames.Contains(character.ToString(CultureInfo.InvariantCulture)))
                                 {
-                                    if (x.CurrentArgument != argument)
-                                    {
-                                        x.Results.Order.Add(argument);
-                                    }
+                                    x.Results.Order.Add(argument);
 
                                     x.CurrentArgument = argument;
 
@@ -131,8 +126,7 @@ namespace Drexel.Arguments.Parsers
                         {
                             return true;
                         }
-                        else if ((x.Position - x.PositionAtTimeOfLastArgumentSet)
-                            > x.CurrentArgument.OperandCount.UpperBound)
+                        else if (x.ValuesAddedToCurrentArgument > x.CurrentArgument.OperandCount.UpperBound)
                         {
                             return true;
                         }
