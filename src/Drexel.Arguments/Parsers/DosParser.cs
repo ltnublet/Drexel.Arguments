@@ -140,6 +140,7 @@ namespace Drexel.Arguments.Parsers
                     x =>
                     {
                         x.Results.ParentedValues.Add(x.CurrentArgument, x.CurrentValue);
+                        x.ValuesAddedToCurrentArgument++;
                         x.Position++;
                         return true;
                     }));

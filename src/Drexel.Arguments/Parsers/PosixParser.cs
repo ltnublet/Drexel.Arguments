@@ -35,8 +35,7 @@ namespace Drexel.Arguments.Parsers
                 new Condition<SharedState>(
                     "Not enough operands",
                     x => x.CurrentArgument != null
-                        && (x.Position - x.PositionAtTimeOfLastArgumentSet)
-                            <= x.CurrentArgument.OperandCount.LowerBound),
+                        && x.ValuesAddedToCurrentArgument < x.CurrentArgument.OperandCount.LowerBound),
                 new Condition<SharedState>(
                     "Main",
                     x =>
@@ -92,8 +91,7 @@ namespace Drexel.Arguments.Parsers
                 new Condition<SharedState>(
                     "Not enough operands",
                     x => x.CurrentArgument != null
-                        && (x.Position - x.PositionAtTimeOfLastArgumentSet)
-                            <= x.CurrentArgument.OperandCount.LowerBound),
+                        && x.ValuesAddedToCurrentArgument < x.CurrentArgument.OperandCount.LowerBound),
                 new Condition<SharedState>(
                     "Main",
                     x =>
@@ -174,6 +172,7 @@ namespace Drexel.Arguments.Parsers
                     x =>
                     {
                         x.Results.ParentedValues.Add(x.CurrentArgument, x.CurrentValue);
+                        x.ValuesAddedToCurrentArgument++;
                         x.Position++;
                         return true;
                     }));

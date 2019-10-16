@@ -12,7 +12,7 @@ namespace Sandbox.Framework
     {
         public static void Main(string[] args)
         {
-            Program.MsBuildMain(args);
+            Program.DosMain(args);
         }
 
         public static void MsBuildTest(string[] args)
@@ -288,7 +288,6 @@ namespace Sandbox.Framework
                 "/B",
                 "beta1",
                 "beta2",
-                "beta3",
                 "/EFG",
                 "unparented3",
                 "/C",
