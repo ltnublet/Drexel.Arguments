@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace Drexel.Arguments
+namespace Drexel.Arguments.Parsers
 {
     /// <summary>
     /// Represents a collection of parse results.

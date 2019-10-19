@@ -4,7 +4,7 @@ using System.Globalization;
 using Drexel.Arguments.Parsers.Internals;
 using Drexel.Collections.Generic;
 
-namespace Drexel.Arguments.Parsers
+namespace Drexel.Arguments.Parsers.Implementations
 {
     internal sealed class PosixParser : IParser
     {

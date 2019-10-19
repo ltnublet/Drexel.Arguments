@@ -1,4 +1,4 @@
-﻿namespace Drexel.Arguments
+﻿namespace Drexel.Arguments.Parsers.Internals
 {
     internal enum Position
     {

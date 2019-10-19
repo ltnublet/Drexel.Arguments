@@ -56,6 +56,16 @@ namespace Drexel.Arguments
         public static CountBounds Single { get; } = new CountBounds(1, 1);
 
         /// <summary>
+        /// Gets a <see cref="CountBounds"/> that corresponds to a count of one or more.
+        /// </summary>
+        public static CountBounds OneOrMore { get; } = new CountBounds(1, null);
+
+        /// <summary>
+        /// Gets a <see cref="CountBounds"/> that corresponds to a count of zero or more.
+        /// </summary>
+        public static CountBounds ZeroOrMore { get; } = new CountBounds(0, null);
+
+        /// <summary>
         /// Gets the lower bound of the count.
         /// </summary>
         public long LowerBound { get; }

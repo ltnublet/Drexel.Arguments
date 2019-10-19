@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Drexel.Arguments
+namespace Drexel.Arguments.Parsers.Internals
 {
     internal sealed class UnparentedValues
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Drexel.Collections.Generic;
 
-namespace Drexel.Arguments.Parsers
+namespace Drexel.Arguments.Parsers.Implementations
 {
     internal sealed class UnityParser : IParser
     {

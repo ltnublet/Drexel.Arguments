@@ -25,9 +25,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".StyleCop", ".StyleCop", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Drexel.Arguments", "src\Drexel.Arguments\Drexel.Arguments.csproj", "{1A6CBAEC-6309-44EC-AA9A-09389023A9DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.Core", "tests\Sandbox.Core\Sandbox.Core.csproj", "{4EDDBAC9-1649-4E80-B244-D0F88B98C7CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox.Core", "tests\Sandbox.Core\Sandbox.Core.csproj", "{4EDDBAC9-1649-4E80-B244-D0F88B98C7CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox.Framework", "tests\Sandbox.Framework\Sandbox.Framework.csproj", "{4E8A6D97-B62F-421C-8DEA-76DD5DEDF7E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drexel.Arguments.Tests", "tests\Drexel.Arguments.Tests\Drexel.Arguments.Tests.csproj", "{906D139F-D101-4D12-8CFC-3724EAF9183C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{4E8A6D97-B62F-421C-8DEA-76DD5DEDF7E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E8A6D97-B62F-421C-8DEA-76DD5DEDF7E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E8A6D97-B62F-421C-8DEA-76DD5DEDF7E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{906D139F-D101-4D12-8CFC-3724EAF9183C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{906D139F-D101-4D12-8CFC-3724EAF9183C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{906D139F-D101-4D12-8CFC-3724EAF9183C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{906D139F-D101-4D12-8CFC-3724EAF9183C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +62,7 @@ Global
 		{1A6CBAEC-6309-44EC-AA9A-09389023A9DF} = {9BC5F307-4892-41B9-A289-BF9194AF03A9}
 		{4EDDBAC9-1649-4E80-B244-D0F88B98C7CC} = {003A06FC-C989-48E1-9DA7-F206E419F0B6}
 		{4E8A6D97-B62F-421C-8DEA-76DD5DEDF7E3} = {003A06FC-C989-48E1-9DA7-F206E419F0B6}
+		{906D139F-D101-4D12-8CFC-3724EAF9183C} = {003A06FC-C989-48E1-9DA7-F206E419F0B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A6A2452A-D671-4828-96DF-201B033E990A}
